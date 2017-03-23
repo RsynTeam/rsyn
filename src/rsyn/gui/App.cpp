@@ -50,7 +50,7 @@ bool MyApp::OnInit(){
 	wxInitAllImageHandlers();
 
 	wxFrame *frame = nullptr;
-	if (clsGui.empty() || clsGui == "iccad") {
+	if (clsGui.empty() || clsGui == "default" || clsGui == "iccad") {
 		frame = new MainFrame();
 	} else if (clsGui == "schematic") {
 		frame = new SchematicFrame();
