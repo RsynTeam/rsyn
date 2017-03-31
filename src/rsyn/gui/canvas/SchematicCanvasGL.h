@@ -152,6 +152,7 @@ private:
 	
 
 	static const float LAYER_GRID;
+	static const float LAYER_SHAPE_FILLING;
 	static const float LAYER_SHAPES;
 	static const float LAYER_SELECTED;
 
@@ -199,7 +200,9 @@ private:
 	void renderGrid();
 	void defineInstancePos(Rsyn::Instance instance, DBUxy & lastPos, int y);
 	void openNextCells();
-	
+
+	void renderExperimental();
+
 public:
 
 	NewSchematicCanvasGL(wxWindow* parent);

@@ -647,6 +647,265 @@ void SchematicCanvasGL::drawGraph(float x, float y, float w, float h, float t) {
 	nvgStrokeWidth(vg, 1.0f);
 } // end method
 
+////////////////////////////////////////////////////////////////////////////////
+// Drawing (Experimental)
+////////////////////////////////////////////////////////////////////////////////
+
+enum ShapeType {
+	SHAPE_TYPE_LINE,
+	SHAPE_TYPE_RECTANGLE,
+	SHAPE_TYPE_CIRCLE,
+	SHAPE_TYPE_PATH
+};
+
+class Scribble {
+public:
+	virtual void render(const float ratio, const float z) const = 0;
+}; // end class
+
+class CircleScribble : public Scribble {
+private:
+	float xc;
+	float yc;
+	float r;
+
+public:
+
+	void set(const float x, const float y, const float radius) {
+		xc = x;
+		yc = y;
+		r = radius;
+	} // end method
+
+	virtual void render(const float ratio, const float z) const override {
+		const int numSamples = (int) std::max(10.0f, 10.0f / ratio);
+		const float degreePerStep = (2.0f * 3.14159265359f) / numSamples;
+
+		glBegin(GL_POLYGON);
+		for (int i = 0; i < numSamples; i++) {
+			const float theta = i * degreePerStep;
+			const float x = xc + (r * std::cos(theta));
+			const float y = yc + (r * std::sin(theta));
+			glVertex3f(x, y, z);
+		} // end for
+		glEnd();
+	} // end method
+}; // end class
+
+class PathScribble : public Scribble {
+private:
+	enum PathType {
+		LINE,
+		QUADRATIC,
+		CUBIC
+	};
+
+	std::vector<float> points;
+	std::vector<PathType> cmds;
+
+	void
+	renderLineTo(
+		const float x, const float y, const float z
+	) const {
+		glVertex3f(x, y, z);
+	} // end method
+
+
+	void
+	renderQuadraticCurveTo(
+		const float x0, const float y0,
+		const float x1, const float y1,
+		const float x2, const float y2,
+		const float z
+	) const {
+		const int N = 25;
+		
+		for (int i = 1; i <= N; i++) {  // first point was already processed
+			const float t1 = float(i)/float(N);
+			const float t2 = t1*t1;
+			const float a = 1-t1; // (1-t)^1
+			const float b = a*a;  // (1-t)^2
+
+			const float xt = b*x0 + 2*a*t1*x1 + t2*x2;
+			const float yt = b*y0 + 2*a*t1*y1 + t2*y2;
+
+			glVertex3f(xt, yt, z);
+		} // end for
+	} // end for
+
+	void
+	renderCubicCurveTo(
+		const float x0, const float y0,
+		const float x1, const float y1,
+		const float x2, const float y2,
+		const float x3, const float y3,
+		const float z
+	) const {
+		const int N = 25;
+
+		for (int i = 1; i <= N; i++) { // first point was already processed
+			const float t1 = float(i)/float(N);
+			const float t2 = t1*t1;
+			const float t3 = t2*t1;
+			const float a = 1-t1; // (1-t)^1
+			const float b = a*a;  // (1-t)^2
+			const float c = b*a;  // (1-t)^3
+
+			const float xt = c*x0 + 3*b*t1*x1 + 3*a*t2*x2 + t3*x3;
+			const float yt = c*y0 + 3*b*t1*y1 + 3*a*t2*y2 + t3*y3;
+
+			glVertex3f(xt, yt, z);
+		} // end for
+	} // end method
+
+	void 
+	processLine(
+			const float z,
+			int &head
+	) const {
+		const float x = points[head++];
+		const float y = points[head++];
+		renderLineTo(x, y, z);
+	} // end method
+
+	void 
+	processQuadraticCurve(
+			const float z,
+			int &head
+	) const {
+		const float x0 = points[head-2];
+		const float y0 = points[head-1];
+		const float x1 = points[head++];
+		const float y1 = points[head++];
+		const float x2 = points[head++];
+		const float y2 = points[head++];
+		renderQuadraticCurveTo(x0, y0, x1, y1, x2, y2, z);
+	} // end method
+
+	void 
+	processCubicCurve(
+			const float z,
+			int &head
+	) const {
+		const float x0 = points[head-2];
+		const float y0 = points[head-1];
+		const float x1 = points[head++];
+		const float y1 = points[head++];
+		const float x2 = points[head++];
+		const float y2 = points[head++];
+		const float x3 = points[head++];
+		const float y3 = points[head++];
+		renderCubicCurveTo(x0, y0, x1, y1, x2, y2, x3, y3, z);
+	} // end method
+
+public:
+
+	virtual void render(
+			const float ratio, const float z
+	) const override {
+		if (cmds.empty())
+			return;
+
+		glBegin(GL_POLYGON);
+		glVertex3f(points[0], points[1], z);
+		int head = 2;
+		for (PathType type : cmds) {
+			switch (type) {
+				case LINE:
+					processLine(z, head);
+					break;
+				case QUADRATIC:
+					processQuadraticCurve(z, head);
+					break;
+				case CUBIC:
+					processCubicCurve(z, head);
+					break;
+				default:
+					assert(false);
+			} // end switch
+		} // end for
+
+		glEnd();
+	} // end method
+
+	void moveTo(
+			const float x, const float y
+	) {
+		points.clear();
+		points.push_back(x);
+		points.push_back(y);
+	} // end method
+
+	void lineTo(
+			const float x, const float y
+	) {
+		cmds.push_back(LINE);
+		points.push_back(x);
+		points.push_back(y);
+	} // end method
+
+	void quadraticCurveTo(
+			const float x1, const float y1,
+			const float x2, const float y2
+	) {
+		cmds.push_back(QUADRATIC);
+		points.push_back(x1);
+		points.push_back(y1);
+		points.push_back(x2);
+		points.push_back(y2);
+	} // end method
+
+	void cubicCurveTo(
+			const float x1, const float y1,
+			const float x2, const float y2,
+			const float x3, const float y3
+	) {
+		cmds.push_back(CUBIC);
+		points.push_back(x1);
+		points.push_back(y1);
+		points.push_back(x2);
+		points.push_back(y2);
+		points.push_back(x3);
+		points.push_back(y3);
+	} // end method
+	
+}; // end class
+
+// -----------------------------------------------------------------------------
+
+void NewSchematicCanvasGL::renderExperimental() {
+	const float x = 5;
+	const float y = 5;
+	const float w = 4;
+	const float h = 4;
+	
+	const float alpha = 0.4f;
+	const float r = w*0.15f;
+	const float aw = alpha * w;
+	const float ew = 1.07f * w;
+
+	PathScribble path;
+	path.moveTo(x + aw, y + 0);
+	path.lineTo(x +  0, y + 0);
+	path.lineTo(x +  0, y + h);
+	path.lineTo(x + aw, y + h);
+	path.cubicCurveTo(x + ew, y + h, x + ew, y + 0, x + aw, y + 0);
+
+	CircleScribble circle;
+	circle.set(x+w+r/2-0.1f, y + h/2, r);
+
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	glColor3ub(255, 255, 255);
+	path.render(0.1f, LAYER_SHAPE_FILLING);
+	circle.render(0.1f, LAYER_SHAPE_FILLING);
+
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glColor3ub(0, 0, 0);
+	path.render(0.1f, LAYER_SHAPES);
+	circle.render(0.1f, LAYER_SHAPES);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+} // end method
+
 // #############################################################################
 // New Schematic
 // #############################################################################
@@ -654,6 +913,7 @@ void SchematicCanvasGL::drawGraph(float x, float y, float w, float h, float t) {
 // -----------------------------------------------------------------------------
 
 const float NewSchematicCanvasGL::LAYER_GRID   = 0.0f;
+const float NewSchematicCanvasGL::LAYER_SHAPE_FILLING = 0.05f;
 const float NewSchematicCanvasGL::LAYER_SHAPES = 0.1f;
 const float NewSchematicCanvasGL::LAYER_SELECTED = 0.4f;
 
@@ -788,7 +1048,8 @@ void NewSchematicCanvasGL::onRender(wxPaintEvent& evt) {
 		clsFirstRendering = false;
 	} // end if
 
-	renderGrid();	
+	renderGrid();
+	//renderExperimental();
 	drawPath();
 	selectCellAt();
 	openNextCells();
