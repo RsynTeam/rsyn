@@ -28,6 +28,7 @@
 
 #include "rsyn/core/Rsyn.h"
 #include "rsyn/engine/Service.h"
+#include "rsyn/engine/Message.h"
 #include "rsyn/model/timing/EdgeArray.h"
 
 #include "rsyn/util/Stepwatch.h"
@@ -56,7 +57,7 @@ class Scenario;
 // Static Timing Analysis
 ////////////////////////////////////////////////////////////////////////////////
 
- class Timer : public Service, public Rsyn::Observer {
+class Timer : public Service, public Rsyn::Observer {
 public:
 
 	enum InputDriverDelayMode {
@@ -78,8 +79,8 @@ private:
 	TimingModel *timingModel;
 	InputDriverDelayMode inputDriverDelayMode = INPUT_DRIVER_DELAY_MODE_UI_TIMER;
 
-	Message msgUnusualArcType;
-	Message msgUnusualArcSense;
+	Rsyn::Message msgUnusualArcType;
+	Rsyn::Message msgUnusualArcSense;
 	
 public:
 	
