@@ -28,6 +28,7 @@
 #include "rsyn/engine/Service.h"
 #include "rsyn/engine/Process.h"
 #include "rsyn/engine/Reader.h"
+#include "rsyn/engine/Message.h"
 
 #include "rsyn/3rdparty/json/json.hpp"
 
@@ -37,7 +38,6 @@
 #include "rsyn/core/Rsyn.h"
 #include "rsyn/util/Logger.h"
 #include "rsyn/util/Units.h"
-#include "Message.h"
 
 namespace Rsyn {
 
