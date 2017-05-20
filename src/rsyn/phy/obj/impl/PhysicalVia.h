@@ -13,6 +13,7 @@
  * limitations under the License.
  */
 
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -20,32 +21,31 @@
  */
 
 /* 
- * File:   PhysicalLayerData.h
+ * File:   PhysicalVia.h
  * Author: jucemar
  *
- * Created on 13 de Setembro de 2016, 19:09
+ * Created on 14 de Maio de 2017, 15:25
  */
-
-#ifndef PHYSICALDESIGN_PHYSICALLAYERDATA_H
-#define PHYSICALDESIGN_PHYSICALLAYERDATA_H
 
 namespace Rsyn {
 
-class PhysicalLayerData : public PhysicalObject {
-public:
-	DBU clsPitch = 0;
-	DBU clsWidth = 0;
-	DBU clsSpacing = 0;
-	int clsIndex = -1;
-	int clsRelativeIndex = -1;
-	Rsyn::PhysicalLayerType clsType = INVALID_PHY_LAYER_TYPE;
-	Rsyn::PhysicalLayerDirection clsDirection = INVALID_PHY_LAYER_DIRECTION;
-	std::string clsName = Rsyn::getPhysicalInvalidName();
-	PhysicalLayerData() = default;
-}; // end class 
+inline const std::string & PhysicalVia::getName() const {
+	return data->clsName;
+} // end method 
+
+// -----------------------------------------------------------------------------
+
+inline const std::vector<Rsyn::PhysicalViaLayer> & PhysicalVia::allLayers() const {
+	return data->clsViaLayers;
+} // end method 
+
+// -----------------------------------------------------------------------------
+
+inline std::size_t PhysicalVia::getNumLayers() const {
+	return data->clsViaLayers.size();
+} // end method 
+
+// -----------------------------------------------------------------------------
 
 } // end namespace 
-
-
-#endif /* PHYSICALDESIGN_PHYSICALLAYERDATA_H */
 

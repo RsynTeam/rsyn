@@ -20,32 +20,25 @@
  */
 
 /* 
- * File:   PhysicalLayerData.h
+ * File:   PhysicalViaData.h
  * Author: jucemar
  *
- * Created on 13 de Setembro de 2016, 19:09
+ * Created on 14 de Maio de 2017, 14:49
  */
 
-#ifndef PHYSICALDESIGN_PHYSICALLAYERDATA_H
-#define PHYSICALDESIGN_PHYSICALLAYERDATA_H
+#ifndef PHYSICALDESIGN_PHYSICALVIADATA_H
+#define PHYSICALDESIGN_PHYSICALVIADATA_H
 
 namespace Rsyn {
 
-class PhysicalLayerData : public PhysicalObject {
+class PhysicalViaData {
 public:
-	DBU clsPitch = 0;
-	DBU clsWidth = 0;
-	DBU clsSpacing = 0;
-	int clsIndex = -1;
-	int clsRelativeIndex = -1;
-	Rsyn::PhysicalLayerType clsType = INVALID_PHY_LAYER_TYPE;
-	Rsyn::PhysicalLayerDirection clsDirection = INVALID_PHY_LAYER_DIRECTION;
-	std::string clsName = Rsyn::getPhysicalInvalidName();
-	PhysicalLayerData() = default;
+	std::string clsName;
+	std::vector<Rsyn::PhysicalViaLayer> clsViaLayers;
+	PhysicalViaData() = default;
 }; // end class 
 
 } // end namespace 
 
-
-#endif /* PHYSICALDESIGN_PHYSICALLAYERDATA_H */
+#endif /* PHYSICALDESIGN_PHYSICALVIADATA_H */
 

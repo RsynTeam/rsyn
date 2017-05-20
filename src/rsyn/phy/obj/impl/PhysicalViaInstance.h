@@ -20,32 +20,30 @@
  */
 
 /* 
- * File:   PhysicalLayerData.h
+ * File:   PhysicalViaInstance.h
  * Author: jucemar
  *
- * Created on 13 de Setembro de 2016, 19:09
+ * Created on 15 de Maio de 2017, 12:48
  */
-
-#ifndef PHYSICALDESIGN_PHYSICALLAYERDATA_H
-#define PHYSICALDESIGN_PHYSICALLAYERDATA_H
 
 namespace Rsyn {
 
-class PhysicalLayerData : public PhysicalObject {
-public:
-	DBU clsPitch = 0;
-	DBU clsWidth = 0;
-	DBU clsSpacing = 0;
-	int clsIndex = -1;
-	int clsRelativeIndex = -1;
-	Rsyn::PhysicalLayerType clsType = INVALID_PHY_LAYER_TYPE;
-	Rsyn::PhysicalLayerDirection clsDirection = INVALID_PHY_LAYER_DIRECTION;
-	std::string clsName = Rsyn::getPhysicalInvalidName();
-	PhysicalLayerData() = default;
-}; // end class 
+inline Rsyn::PhysicalVia PhysicalViaInstance::getLibraryVia() const {
+	return data->clsPhysicalVia;
+} // end method 
 
-} // end namespace 
+// -----------------------------------------------------------------------------
 
+inline DBUxy PhysicalViaInstance::getPosition() const {
+	return data->clsPos;
+} // end method 
 
-#endif /* PHYSICALDESIGN_PHYSICALLAYERDATA_H */
+// -----------------------------------------------------------------------------
 
+inline DBU PhysicalViaInstance::getPosition(const Dimension dim) const {
+	return data->clsPos[dim];
+} // end method 
+
+// -----------------------------------------------------------------------------
+
+} // end namespace  

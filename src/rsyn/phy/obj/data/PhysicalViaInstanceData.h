@@ -13,6 +13,7 @@
  * limitations under the License.
  */
 
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -20,32 +21,24 @@
  */
 
 /* 
- * File:   PhysicalLayerData.h
+ * File:   PhysicalViaInstanceData.h
  * Author: jucemar
  *
- * Created on 13 de Setembro de 2016, 19:09
+ * Created on 15 de Maio de 2017, 12:42
  */
 
-#ifndef PHYSICALDESIGN_PHYSICALLAYERDATA_H
-#define PHYSICALDESIGN_PHYSICALLAYERDATA_H
+#ifndef PHYSICALVIAINSTANCEDATA_H
+#define PHYSICALVIAINSTANCEDATA_H
 
-namespace Rsyn {
+namespace Rsyn{
 
-class PhysicalLayerData : public PhysicalObject {
+class PhysicalViaInstanceData {
 public:
-	DBU clsPitch = 0;
-	DBU clsWidth = 0;
-	DBU clsSpacing = 0;
-	int clsIndex = -1;
-	int clsRelativeIndex = -1;
-	Rsyn::PhysicalLayerType clsType = INVALID_PHY_LAYER_TYPE;
-	Rsyn::PhysicalLayerDirection clsDirection = INVALID_PHY_LAYER_DIRECTION;
-	std::string clsName = Rsyn::getPhysicalInvalidName();
-	PhysicalLayerData() = default;
+	Rsyn::PhysicalVia clsPhysicalVia;
+	DBUxy clsPos;
 }; // end class 
 
 } // end namespace 
 
-
-#endif /* PHYSICALDESIGN_PHYSICALLAYERDATA_H */
+#endif /* PHYSICALVIAINSTANCEDATA_H */
 

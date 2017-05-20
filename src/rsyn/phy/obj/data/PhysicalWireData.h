@@ -20,32 +20,24 @@
  */
 
 /* 
- * File:   PhysicalLayerData.h
+ * File:   PhysicalWireData.h
  * Author: jucemar
  *
- * Created on 13 de Setembro de 2016, 19:09
+ * Created on 12 de Maio de 2017, 22:16
  */
 
-#ifndef PHYSICALDESIGN_PHYSICALLAYERDATA_H
-#define PHYSICALDESIGN_PHYSICALLAYERDATA_H
+#ifndef PHYSICALDESIGN_PHYSICALWIREDATA_H
+#define PHYSICALDESIGN_PHYSICALWIREDATA_H
 
 namespace Rsyn {
 
-class PhysicalLayerData : public PhysicalObject {
+class PhysicalWireData {
 public:
-	DBU clsPitch = 0;
-	DBU clsWidth = 0;
-	DBU clsSpacing = 0;
-	int clsIndex = -1;
-	int clsRelativeIndex = -1;
-	Rsyn::PhysicalLayerType clsType = INVALID_PHY_LAYER_TYPE;
-	Rsyn::PhysicalLayerDirection clsDirection = INVALID_PHY_LAYER_DIRECTION;
-	std::string clsName = Rsyn::getPhysicalInvalidName();
-	PhysicalLayerData() = default;
+	std::vector<Rsyn::PhysicalWireSegment> clsWireSegments;
+	PhysicalWireData() = default;
 }; // end class 
 
 } // end namespace 
 
-
-#endif /* PHYSICALDESIGN_PHYSICALLAYERDATA_H */
+#endif /* PHYSICALDESIGN_PHYSICALWIREDATA_H */
 

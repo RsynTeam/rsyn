@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -20,60 +20,74 @@
  */
 
 /* 
- * File:   PhysicalNet.h
+ * File:   PhysicalWireSegment.h
  * Author: jucemar
  *
- * Created on 18 de Setembro de 2016, 09:03
+ * Created on 13 de Maio de 2017, 16:01
  */
+
 
 namespace Rsyn {
 
-inline DBUxy PhysicalNet::getHPWL() const {
-	return data->clsBounds.computeLength();
+inline bool PhysicalWireSegment::hasPoints() const {
+	return data->clsPoints.size() > 0;
 } // end method 
 
 // -----------------------------------------------------------------------------
 
-inline DBU PhysicalNet::getHPWL(const Dimension dim) {
-	return data->clsBounds.computeLength(dim);
+inline const std::vector<DBUxy> & PhysicalWireSegment::allSegmentPoints() const {
+	return data->clsPoints;
 } // end method 
 
 // -----------------------------------------------------------------------------
 
-inline const Bounds & PhysicalNet::getBounds() const {
-	return data->clsBounds;
+inline DBUxy PhysicalWireSegment::getPoint(const std::size_t index) const {
+	return data->clsPoints[index];
 } // end method 
 
 // -----------------------------------------------------------------------------
 
-inline DBUxy PhysicalNet::getCoordinate(const Boundary bound) const {
-	return data->clsBounds[bound];
+inline const std::size_t PhysicalWireSegment::getNumPoints() const {
+	return data->clsPoints.size();
 } // end method 
 
 // -----------------------------------------------------------------------------
 
-inline DBU PhysicalNet::getCoordinate(const Boundary bound, const Dimension dim) const {
-	return data->clsBounds[bound][dim];
+inline DBU PhysicalWireSegment::getExtension() const {
+	return data->clsWireExtension;
 } // end method 
 
 // -----------------------------------------------------------------------------
 
-inline Rsyn::Pin PhysicalNet::getPinBoundary(const Boundary bound, const Dimension dim) const {
-	return data->clsBoundPins[bound][dim];
+inline Rsyn::PhysicalLayer PhysicalWireSegment::getLayer() const {
+	return data->clsPhysicalLayer;
 } // end method 
 
 // -----------------------------------------------------------------------------
 
-inline const std::vector<Rsyn::PhysicalWire> & PhysicalNet::allWires() const {
-	return data->clsWires;
+inline Rsyn::PhysicalVia PhysicalWireSegment::getVia() const {
+	return data->clsPhysicalVia;
 } // end method 
 
 // -----------------------------------------------------------------------------
 
-inline const std::vector<Rsyn::PhysicalViaInstance> & PhysicalNet::allVias() const {
-	return data->clsViaInstances;
+inline bool PhysicalWireSegment::hasVia() const {
+	return data->clsPhysicalVia != nullptr;
 } // end method 
 
 // -----------------------------------------------------------------------------
 
+inline const Bounds & PhysicalWireSegment::getRectangle() const {
+	return data->clsRectangle;
+} // end method 
+
+// -----------------------------------------------------------------------------
+
+inline const bool PhysicalWireSegment::hasRectangle() const {
+	return data->clsHasRectangle;
+} // end method 
+
+// -----------------------------------------------------------------------------
 } // end namespace 
+
+
