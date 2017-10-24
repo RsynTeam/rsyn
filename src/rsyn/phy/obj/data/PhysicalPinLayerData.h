@@ -35,7 +35,7 @@ namespace Rsyn {
 class PhysicalPinLayerData : public PhysicalObject {
 public:
 	std::vector<Bounds> clsBounds;
-	std::vector<PhysicalPolygon> clsPolygons;
+	std::vector<Polygon> clsPolygons;
 	Rsyn::PhysicalLayer clsLibLayer;
 	PhysicalPinLayerData() = default;
 }; // end class 

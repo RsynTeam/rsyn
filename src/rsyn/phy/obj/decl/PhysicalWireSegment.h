@@ -34,10 +34,6 @@ public:
 	PhysicalWireSegment(std::nullptr_t) : Proxy(nullptr) {
 	}
 
-	//! @brief Returns routed wire width segment. It is valid only for special nets.
-	//! @warning Regular wire segments must get wire width from layer. 
-	DBU getRoutedWidth() const;
-	
 	//! @brief Returns if wire segment is define by a sequence of points.
 	bool hasPoints() const;
 	//! @brief Returns rectangular boundary of wire
@@ -55,7 +51,7 @@ public:
 	//! @brief returns if wire segment has a via.
 	bool hasVia() const;
 	
-	/*! @details
+	/*! 
 	 "RECT ( deltax1 deltay1 deltax2 deltay2 )
 	 Indicates that a rectangle is created from the previous ( x y ) 
 	 routing point using the delta values. The RECT values leave the 
@@ -65,11 +61,6 @@ public:
 
 	//! @brief Returns if wire segment had defined a rectangle
 	const bool hasRectangle() const;
-	
-	//! @brief Returns number of points in segment (clsPoints.size())
-	const std::size_t getNumRoutingPoints() const;
-	const std::vector<PhysicalRoutingPoint> & allRoutingPoints() const;
-	
 }; // end class 
 
 } // end namespace 

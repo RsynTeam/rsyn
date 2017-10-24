@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Dec 21 2016)
+// C++ code generated with wxFormBuilder (version Feb 16 2016)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO "NOT" EDIT THIS FILE!
@@ -119,7 +119,7 @@ class MainFrameBase : public wxFrame
 		wxStaticText* m_staticText18031;
 		wxRadioButton* clsOptCellTimingModeEarly;
 		wxRadioButton* clsOptCellTimingModeLate;
-		wxPanel* clsPanelCellPhysical;
+		wxPanel* m_panel81;
 		wxPropertyGrid* clsPropertyGridCellPhysical;
 		wxPGProperty* clsPropertyGridItemCellPhysicalName;
 		wxPGProperty* clsPropertyGridItemCellPhysicalLibCell;
@@ -132,16 +132,6 @@ class MainFrameBase : public wxFrame
 		wxPGProperty* m_propertyGridItem121;
 		wxPGProperty* clsPropertyGridItemCellWidth;
 		wxPGProperty* clsPropertyGridItemCellHeight;
-		wxPanel* clsPanelNet;
-		wxPropertyGrid* clsPropertyGridNet;
-		wxPGProperty* clsPropertyGridItemNetName;
-		wxPGProperty* clsPropertyGridItemNetDriverCount;
-		wxPGProperty* clsPropertyGridItemNetSinkCount;
-		wxPanel* clsPanelPin;
-		wxPropertyGrid* clsPropertyGridPin;
-		wxPGProperty* clsPropertyGridItemPinName;
-		wxPGProperty* clsPropertyGridItemPinInstance;
-		wxPGProperty* clsPropertyGridItemPinDirection;
 		wxPanel* canvas_panel;
 		wxChoicebook* clsChoicebookView;
 		wxPanel* clsPanelPhysicalView;
@@ -189,7 +179,7 @@ class MainFrameBase : public wxFrame
 		wxChoice* clsSingleCellLegalizationMethod;
 		wxButton* clsBtnLegalizeSelectedCell;
 		wxTextCtrl* clsTxtCommand;
-		wxStaticText* clsLblHover;
+		wxStaticText* clsLblQualityScore;
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnCloseWindow( wxCloseEvent& event ) { event.Skip(); }

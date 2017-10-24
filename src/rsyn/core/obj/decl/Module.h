@@ -19,8 +19,7 @@ namespace Rsyn {
 class Module : public Instance {
 	
 RSYN_FRIEND_OF_GENERIC_LIST_COLLECTION;
-
-friend class RawPointer;
+	
 friend class Design;
 friend class Instance;
 

@@ -38,8 +38,7 @@ enum IdentifierListType {
 }; // end enum
 
 enum ErrorCode {
-	ERROR_UNNAMED_PORT_MAPPING_NOT_SUPPORTED,
-	ERROR_BUS_NOT_SUPPORTED
+	ERROR_UNNAMED_PORT_MAPPING_NOT_SUPPORTED
 }; // end enum
 
 class SimplifiedVerilogReader {
@@ -49,9 +48,7 @@ public:
 	SimplifiedVerilogReader(Legacy::Design &verilogDescriptor) :
 		clsVerilogDescriptor(verilogDescriptor),
 		parser(nullptr),
-		scanner(nullptr),
-		busStartIndex(-1),
-		busEndIndex(-1){}
+		scanner(nullptr) {}
 
 	virtual ~SimplifiedVerilogReader();
 
@@ -94,11 +91,8 @@ private:
 	// Parsing state and callbacks.
 	////////////////////////////////////////////////////////////////////////////
 	IdentifierListType currentIdentifierListType;
-	int busStartIndex;
-	int busEndIndex;
 
 	void setCurrentIdentifierListType(const IdentifierListType type);
-	void setBusRange(const int busStartIndex, const int busEndIndex);
 
 	void readModuleName(const std::string &name);
 	void readIdentifier(const std::string &name);

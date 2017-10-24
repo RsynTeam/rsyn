@@ -16,7 +16,7 @@
 namespace Rsyn {
 		
 struct ArcData : ObjectData {
-	ArcType type : 3;
+	ArcType type : 2;
 	Pin from;
 	Pin to;
 	

@@ -69,23 +69,17 @@ Rsyn::PhysicalPinDirection getPhysicalPinDirection(const std::string &direction)
 //! Converts Pin Direction from enum to string, respectively.
 std::string getPhysicalPinDirection(const Rsyn::PhysicalPinDirection pinDirection);
 
-//! Converts Pin Geometry Class from string to enum, respectively.
-Rsyn::PhysicalPinGeometryClass getPhysicalPinGeometryClass(const std::string & geometryClass);
+//! Converts Pin Port Class from string to enum, respectively.
+Rsyn::PhysicalPinPortClass getPhysicalPinPortClass(const std::string & portClass);
 
 //! Converts Pin Port Class from enum to string, respectively.
-std::string getPhysicalPinGeometryClass(const Rsyn::PhysicalPinGeometryClass geometryClass);
+std::string getPhysicalPinPortClass(const Rsyn::PhysicalPinPortClass portClass);
 
 //! Converts Region type from string to enum, respectively.
 Rsyn::RegionType getPhysicalRegionType(const std::string & type);
 
 //! Converts Region type from enum to string, respectively.
 std::string getPhysicalRegionType(const Rsyn::RegionType type);
-
-//! Converts Physical Design Mode type from string to enum, respectively.
-Rsyn::PhysicalDesignMode getPhysicalDesignModeType(const std::string & type);
-
-//! Converts Physical Design Mode type from enum to string, respectively.
-std::string getPhysicalDesignModeType(const Rsyn::PhysicalDesignMode type);
 
 //! Returns a prefix key word to generated names.
 std::string getPhysicalGeneratedNamePrefix();
@@ -168,8 +162,8 @@ inline std::ostream& operator<<(std::ostream& out, const Rsyn::PhysicalPinDirect
 
 //! Overloads operator << to Pin Port Class.
 
-inline std::ostream& operator<<(std::ostream& out, const Rsyn::PhysicalPinGeometryClass pinPortClass) {
-	return out << getPhysicalPinGeometryClass(pinPortClass);
+inline std::ostream& operator<<(std::ostream& out, const Rsyn::PhysicalPinPortClass pinPortClass) {
+	return out << getPhysicalPinPortClass(pinPortClass);
 } // end operator overloading 
 
 // -----------------------------------------------------------------------------

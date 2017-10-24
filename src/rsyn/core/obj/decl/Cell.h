@@ -17,7 +17,6 @@ namespace Rsyn {
 
 //! @brief A proxy class representing a netlist cell.
 class Cell : public Instance {
-friend class RawPointer;
 friend class Design;
 friend class Instance;
 private:	

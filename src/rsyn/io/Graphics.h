@@ -65,7 +65,6 @@ public:
 	
 	// Coloring schemes.	
 	void coloringRandomBlue();
-	void coloringRandomGray();
 	void coloringByCellType();
 	void coloringColorful();
 	void coloringGray();

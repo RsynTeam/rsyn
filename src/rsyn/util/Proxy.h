@@ -31,11 +31,7 @@ protected:
 	// to int, which led to hard to find bugs. Now we explicitly tell the
 	// compiler to not allow such conversion by making the cast operator
 	// private.
-	operator int() const; // not implemented
-
-	// Returns the pointer to the data stored by this proxy.
-	T *getData() { return data; }
-	const T *getData() const { return data; }
+	operator int() const { return 0; }
 
 public:
 

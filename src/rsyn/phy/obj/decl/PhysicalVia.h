@@ -59,9 +59,6 @@ public:
 
 	//! @brief Returns number of via layers;
 	std::size_t getNumLayers() const;
-	
-	bool isDesignVia() const;
-	
 }; // end class 
 
 } // end namespace 

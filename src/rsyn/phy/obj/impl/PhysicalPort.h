@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+ 
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -29,23 +29,15 @@
 namespace Rsyn {
 // -----------------------------------------------------------------------------
 
-inline PhysicalLayer PhysicalPort::getLayer() const {
+inline PhysicalLayer PhysicalPort::getPortLayer() const {
 	return data->clsPortLayer;
 } // end method 
 
 // -----------------------------------------------------------------------------
 
-inline bool PhysicalPort::hasLayer() const {
+inline bool PhysicalPort::hasPortLayer() const {
 	return data->clsPortLayer != nullptr;
 } // end method 
-
-// -----------------------------------------------------------------------------
-
-inline PhysicalOrientation PhysicalPort::getOrientation() const {
-	return data->clsOrientation;
-} // end method 
-
-// -----------------------------------------------------------------------------
 
 } // end namespace 
 

@@ -37,11 +37,10 @@
 #include <algorithm>
 #include <limits>
 
-#include <boost/geometry.hpp>
-#include <boost/geometry/geometries/geometries.hpp>
 
 #include "rsyn/core/Rsyn.h"
 #include "rsyn/util/Bounds.h"
+#include "rsyn/util/Polygon.h"
 #include "rsyn/util/FloatingPoint.h"
 #include "rsyn/util/dbu.h"
 #include "rsyn/util/Proxy.h"
@@ -60,16 +59,8 @@ static PhysicalIndex INVALID_PHYSICAL_INDEX = std::numeric_limits<PhysicalIndex>
 
 typedef nlohmann::json Json;
 
-// Boost Polygon typedef 
-namespace boostGeometry = boost::geometry;
-typedef boostGeometry::model::point<DBU, 2, boostGeometry::cs::cartesian> PhysicalPolygonPoint;
-// The first type is the polygon point definition. The second type disable clockwise direction of polygon. 
-// The third type disable include again at polygon end the first point. Polygon is open. 
-typedef boostGeometry::model::polygon<PhysicalPolygonPoint, false, false> PhysicalPolygon; 
-
 class PhysicalObject;
 
-class PhysicalRoutingPointData;
 class PhysicalDieData;
 class PhysicalLayerData;
 class PhysicalSpacingData;
@@ -77,7 +68,7 @@ class PhysicalSiteData;
 class PhysicalRowData;
 class PhysicalObstacleData;
 class PhysicalPinLayerData;
-class PhysicalPinGeometryData;
+class PhysicalPinPortData;
 class PhysicalLibraryPinData;
 class PhysicalLibraryCellData;
 class PhysicalPinData;
@@ -90,12 +81,8 @@ class PhysicalViaData;
 class PhysicalViaInstanceData;
 class PhysicalWireSegmentData;
 class PhysicalWireData;
-class PhysicalSpecialWireData;
-class PhysicalSpecialNetData;
-class PhysicalTrackData;
 class PhysicalDesignData;
 
-class PhysicalRoutingPoint;
 class PhysicalDie;
 class PhysicalLayer;
 class PhysicalSpacing;
@@ -103,7 +90,7 @@ class PhysicalSite;
 class PhysicalRow;
 class PhysicalObstacle;
 class PhysicalPinLayer;
-class PhysicalPinGeometry;
+class PhysicalPinPort;
 class PhysicalLibraryPin;
 class PhysicalLibraryCell;
 class PhysicalPin;
@@ -119,9 +106,6 @@ class PhysicalVia;
 class PhysicalViaInstance;
 class PhysicalWireSegment;
 class PhysicalWire;
-class PhysicalSpecialWire;
-class PhysicalSpecialNet;
-class PhysicalTrack;
 class PhysicalDesign;
 
 
@@ -129,20 +113,17 @@ class PhysicalAttributeInitializer;
 template<typename DefaultPhysicalValueType>
 class PhysicalAttributeInitializerWithDefaultValue;
 
-class PhysicalObserver;
-
 } // end namespace 
 
 
 // Object's Declarations (Proxies)
-#include "rsyn/phy/obj/decl/PhysicalRoutingPoint.h"
 #include "rsyn/phy/obj/decl/PhysicalDie.h"
 #include "rsyn/phy/obj/decl/PhysicalLayer.h"
 #include "rsyn/phy/obj/decl/PhysicalSpacing.h"
 #include "rsyn/phy/obj/decl/PhysicalSite.h"
 #include "rsyn/phy/obj/decl/PhysicalRow.h"
 #include "rsyn/phy/obj/decl/PhysicalPinLayer.h"
-#include "rsyn/phy/obj/decl/PhysicalPinGeometry.h"
+#include "rsyn/phy/obj/decl/PhysicalPinPort.h"
 #include "rsyn/phy/obj/decl/PhysicalObstacle.h"
 #include "rsyn/phy/obj/decl/PhysicalLibraryPin.h"
 #include "rsyn/phy/obj/decl/PhysicalLibraryCell.h"
@@ -159,21 +140,17 @@ class PhysicalObserver;
 #include "rsyn/phy/obj/decl/PhysicalViaInstance.h"
 #include "rsyn/phy/obj/decl/PhysicalWireSegment.h"
 #include "rsyn/phy/obj/decl/PhysicalWire.h"
-#include "rsyn/phy/obj/decl/PhysicalSpecialWire.h"
-#include "rsyn/phy/obj/decl/PhysicalSpecialNet.h"
-#include "rsyn/phy/obj/decl/PhysicalTrack.h"
 #include "rsyn/phy/obj/decl/PhysicalDesign.h"
 
 // Object's Data
 #include "rsyn/phy/obj/data/PhysicalObject.h"
-#include "rsyn/phy/obj/data/PhysicalRoutingPointData.h"
 #include "rsyn/phy/obj/data/PhysicalDieData.h"
 #include "rsyn/phy/obj/data/PhysicalLayerData.h"
 #include "rsyn/phy/obj/data/PhysicalSpacingData.h"
 #include "rsyn/phy/obj/data/PhysicalSiteData.h"
 #include "rsyn/phy/obj/data/PhysicalRowData.h"
 #include "rsyn/phy/obj/data/PhysicalPinLayerData.h"
-#include "rsyn/phy/obj/data/PhysicalPinGeometryData.h"
+#include "rsyn/phy/obj/data/PhysicalPinPortData.h"
 #include "rsyn/phy/obj/data/PhysicalObstacleData.h"
 #include "rsyn/phy/obj/data/PhysicalLibraryPinData.h"
 #include "rsyn/phy/obj/data/PhysicalLibraryCellData.h"
@@ -187,24 +164,19 @@ class PhysicalObserver;
 #include "rsyn/phy/obj/data/PhysicalViaInstanceData.h"
 #include "rsyn/phy/obj/data/PhysicalWireSegmentData.h"
 #include "rsyn/phy/obj/data/PhysicalWireData.h"
-#include "rsyn/phy/obj/data/PhysicalSpecialWireData.h"
-#include "rsyn/phy/obj/data/PhysicalSpecialNetData.h"
-#include "rsyn/phy/obj/data/PhysicalTrackData.h"
 #include "rsyn/phy/obj/data/PhysicalDesign.h"
 
 // Physical Infrastructure
 #include "rsyn/phy/infra/PhysicalAttribute.h"
-#include "rsyn/phy/infra/PhysicalObserver.h"
 
 // Object's Implementations
-#include "rsyn/phy/obj/impl/PhysicalRoutingPoint.h"
 #include "rsyn/phy/obj/impl/PhysicalLayer.h"
 #include "rsyn/phy/obj/impl/PhysicalDie.h"
 #include "rsyn/phy/obj/impl/PhysicalSpacing.h"
 #include "rsyn/phy/obj/impl/PhysicalSite.h"
 #include "rsyn/phy/obj/impl/PhysicalRow.h"
 #include "rsyn/phy/obj/impl/PhysicalPinLayer.h"
-#include "rsyn/phy/obj/impl/PhysicalPinGeometry.h"
+#include "rsyn/phy/obj/impl/PhysicalPinPort.h"
 #include "rsyn/phy/obj/impl/PhysicalObstacle.h"
 #include "rsyn/phy/obj/impl/PhysicalLibraryPin.h"
 #include "rsyn/phy/obj/impl/PhysicalLibraryCell.h"
@@ -221,9 +193,6 @@ class PhysicalObserver;
 #include "rsyn/phy/obj/impl/PhysicalViaInstance.h"
 #include "rsyn/phy/obj/impl/PhysicalWireSegment.h"
 #include "rsyn/phy/obj/impl/PhysicalWire.h"
-#include "rsyn/phy/obj/impl/PhysicalSpecialWire.h"
-#include "rsyn/phy/obj/impl/PhysicalSpecialNet.h"
-#include "rsyn/phy/obj/impl/PhysicalTrack.h"
 #include "rsyn/phy/obj/impl/PhysicalDesign.h"
 
 

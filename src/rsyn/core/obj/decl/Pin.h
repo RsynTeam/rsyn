@@ -20,7 +20,6 @@ class Pin : public Proxy<PinData> {
 	
 RSYN_FRIEND_OF_GENERIC_LIST_COLLECTION;
 
-friend class RawPointer;
 friend class Design;
 friend class Port;
 friend class Net;

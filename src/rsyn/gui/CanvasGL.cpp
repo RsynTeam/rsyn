@@ -30,20 +30,19 @@ CanvasGL::CanvasGL(wxWindow* parent) :
 	wxGLCanvas(parent, wxID_ANY, CANVAS_GL_ARGS, wxDefaultPosition, wxDefaultSize, wxFULL_REPAINT_ON_RESIZE) 
 {	
 	
-	Connect( wxEVT_MOTION, wxMouseEventHandler(CanvasGL::onMouseMoved), NULL, this );
-	Connect( wxEVT_LEFT_DOWN, wxMouseEventHandler(CanvasGL::onMouseDown), NULL, this );
-	Connect( wxEVT_LEFT_UP, wxMouseEventHandler(CanvasGL::onMouseReleased), NULL, this );
-	Connect( wxEVT_LEFT_DCLICK, wxMouseEventHandler(CanvasGL::onLeftDoubleClick), NULL, this );
-	Connect( wxEVT_RIGHT_DOWN, wxMouseEventHandler(CanvasGL::onRightClick), NULL, this );
-	Connect( wxEVT_LEAVE_WINDOW, wxMouseEventHandler(CanvasGL::onMouseLeaveWindow), NULL, this );
-	Connect( wxEVT_MOUSEWHEEL, wxMouseEventHandler(CanvasGL::onMouseWheelMoved), NULL, this );
+	Connect( wxEVT_MOTION, wxMouseEventHandler( CanvasGL::onMouseMoved), NULL, this );
+	Connect( wxEVT_LEFT_DOWN, wxMouseEventHandler( CanvasGL::onMouseDown), NULL, this );
+	Connect( wxEVT_LEFT_UP, wxMouseEventHandler( CanvasGL::onMouseReleased), NULL, this );
+	Connect( wxEVT_RIGHT_DOWN, wxMouseEventHandler( CanvasGL::onRightClick), NULL, this );
+	Connect( wxEVT_LEAVE_WINDOW, wxMouseEventHandler( CanvasGL::onMouseLeftWindow), NULL, this );
+	Connect( wxEVT_MOUSEWHEEL, wxMouseEventHandler( CanvasGL::onMouseWheelMoved), NULL, this );
 	
-	Connect( wxEVT_KEY_DOWN, wxKeyEventHandler(CanvasGL::onKeyPressed), NULL, this );
-	Connect( wxEVT_KEY_UP, wxKeyEventHandler(CanvasGL::onKeyReleased), NULL, this );
+	Connect( wxEVT_KEY_DOWN, wxKeyEventHandler( CanvasGL::onKeyPressed), NULL, this );
+	Connect( wxEVT_KEY_UP, wxKeyEventHandler( CanvasGL::onKeyReleased), NULL, this );
 		
-	Connect( wxEVT_SIZE, wxSizeEventHandler(CanvasGL::onResized), NULL, this );
+	Connect( wxEVT_SIZE, wxSizeEventHandler( CanvasGL::onResized), NULL, this );
 	
-	Connect( wxEVT_PAINT, wxPaintEventHandler(CanvasGL::onRender ), NULL, this );
+	Connect( wxEVT_PAINT, wxPaintEventHandler( CanvasGL::onRender ), NULL, this );
 	
 	clsContext = new wxGLContext(this);
 
@@ -127,17 +126,12 @@ void CanvasGL::onMouseReleased(wxMouseEvent& event) {
 
 // -----------------------------------------------------------------------------
 
-void CanvasGL::onLeftDoubleClick(wxMouseEvent& event) {
-} // end method
-
-// -----------------------------------------------------------------------------
-
 void CanvasGL::onRightClick(wxMouseEvent& event) {
 } // end method
 
 // -----------------------------------------------------------------------------
 
-void CanvasGL::onMouseLeaveWindow(wxMouseEvent& event) {
+void CanvasGL::onMouseLeftWindow(wxMouseEvent& event) {
 } // end method
 
 // -----------------------------------------------------------------------------
@@ -332,7 +326,7 @@ void CanvasGL::adjustAspectRatio() {
 // -----------------------------------------------------------------------------
 
 /** Inits the OpenGL viewport for drawing in 2D. */
-void CanvasGL::prepare2DViewport(const int width, const int height, const bool clear) {
+void CanvasGL::prepare2DViewport(const int width, const int height) {
 	wxGLCanvas::SetCurrent(*clsContext);
 	
 	glClearColor(1.0f, 1.0f, 1.0f, 1.0f); // white background
@@ -347,9 +341,8 @@ void CanvasGL::prepare2DViewport(const int width, const int height, const bool c
 	} else {
 		glViewport(0, 0, width, height);
 	} // end else
-
-	if (clear)
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	
 	
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
