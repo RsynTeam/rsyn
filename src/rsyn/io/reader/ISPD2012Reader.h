@@ -32,20 +32,19 @@
 #include "rsyn/engine/Engine.h"
 #include "rsyn/core/Rsyn.h"
 #include "rsyn/3rdparty/json/json.hpp"
-#include "rsyn/util/RCTreeExtractor.h"
 
 namespace Rsyn {
 
-class SizingISPDReader : public Reader {
+class ISPD2012Reader : public Reader {
 protected:
 	Rsyn::Engine engine;
 	Rsyn::Design clsDesign;
 	Rsyn::Module clsModule;
 
 public:
-	SizingISPDReader() {}
-	SizingISPDReader(const SizingISPDReader& orig) {}
-	virtual ~SizingISPDReader() {}
+	ISPD2012Reader() {}
+	ISPD2012Reader(const ISPD2012Reader& orig) {}
+	virtual ~ISPD2012Reader() {}
 	void load(Engine engine, const Json &params);
 
 }; // end class 
