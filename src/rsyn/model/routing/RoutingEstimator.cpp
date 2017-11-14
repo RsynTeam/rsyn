@@ -142,10 +142,12 @@ void RoutingEstimator::updateRoutingOfNet(Rsyn::Net net, const NetUpdateTypeEnum
 				if (routingExtractionModel) {
 					routingExtractionModel->extract(topology, timingNet.rctree);
 				} // end if
+				break;
 			} // end case
 
 			case NET_UPDATE_TYPE_DOWNSTREAM_CAP: {
 				routingExtractionModel->updateDownstreamCap(timingNet.rctree);
+				break;
 			} // end case
 		} // end switch
 	} // end if
